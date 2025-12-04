@@ -14,6 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Tailwind CSS (Via CDN pour garantir le style même si le build échoue partiellement) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -50,15 +51,15 @@
       html, body { 
         height: 100%; 
         width: 100%;
-        overflow: hidden; /* Empêche le scroll de la fenêtre entière */
+        overflow: hidden;
         background-color: #000; 
         color: white; 
         font-family: "Inter", sans-serif;
-        
-        /* Désactive la sélection de texte (effet App) */
         user-select: none; 
         -webkit-user-select: none;
         cursor: default;
+        padding-top: env(safe-area-inset-top); 
+        padding-bottom: env(safe-area-inset-bottom);
       }
       
       #root { height: 100%; width: 100%; display: flex; flex-direction: column; }
@@ -69,25 +70,22 @@
       .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2); }
       .glass-input { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); color: white; user-select: text; -webkit-user-select: text; } 
       
-      /* Scrollbar personnalisée */
       ::-webkit-scrollbar { width: 6px; }
       ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
       ::-webkit-scrollbar-thumb { background: rgba(197, 160, 101, 0.5); border-radius: 10px; }
-      
-      /* Utilitaires Scroll */
       .custom-scrollbar { overflow-y: auto; -webkit-overflow-scrolling: touch; }
     </style>
-<script type="importmap">
+  <script type="importmap">
 {
   "imports": {
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
     "react": "https://aistudiocdn.com/react@^19.2.1",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-    "react/": "https://aistudiocdn.com/react@^19.2.1/",
-    "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.86.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
     "vite": "https://aistudiocdn.com/vite@^7.2.6",
     "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1",
-    "@capacitor/cli": "https://aistudiocdn.com/@capacitor/cli@^7.4.4"
+    "@capacitor/cli": "https://aistudiocdn.com/@capacitor/cli@^7.4.4",
+    "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.86.2"
   }
 }
 </script>
@@ -99,12 +97,17 @@
       <div class="orb w-96 h-96 bg-blue-900 top-0 right-0 mix-blend-screen animate-blob" style="animation-delay: 2s"></div>
       <div class="orb w-96 h-96 bg-gold-600/30 bottom-0 left-20 mix-blend-screen animate-blob" style="animation-delay: 4s"></div>
     </div>
+    
     <div id="root"></div>
+    
+    <!-- Le script principal qui lance l'application -->
     <script type="module" src="/src/index.tsx"></script>
+    
+    <!-- Enregistrement du Service Worker pour PWA -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js');
+          navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed', err));
         });
       }
     </script>
