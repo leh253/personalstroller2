@@ -16,15 +16,23 @@ const ResultsScreen: React.FC<Props> = ({ results, onRestart, onBack, onLogout }
   const handleOfferClick = (stroller: Stroller) => { recordProductClick(stroller); };
 
   return (
-    <div className="w-full h-full flex flex-col animate-in">
+    // FIX SCROLL: w-full h-full flex flex-col
+    // Cela force l'écran à prendre la taille du parent (App.tsx)
+    // Le contenu (div flex-1) poussera ensuite le scroll si nécessaire.
+    <div className="w-full h-full flex flex-col animate-in bg-transparent select-none">
+      
+      {/* Header (Fixe) */}
       <div className="p-4 md:p-6 bg-navy-900/40 backdrop-blur-xl z-10 flex flex-col items-center shrink-0 relative border-b border-white/5">
         <button onClick={onBack} className="absolute top-4 left-4 md:top-6 md:left-6 text-gray-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full"><ArrowLeft size={24} /></button>
         <Logo size="small" className="md:scale-110 md:mb-2" />
         <div className="hidden md:block text-center"><h2 className="text-xl text-white tracking-widest font-light mt-2 uppercase">Votre Sélection</h2><p className="text-sm text-gray-400 mt-1">{results.length} poussette(s) trouvée(s)</p></div>
       </div>
-      <div className="flex-1 overflow-y-auto no-scrollbar scroll-smooth">
+      
+      {/* Zone de Scroll (Fluide) */}
+      <div className="flex-1 overflow-y-auto scroll-smooth custom-scrollbar overscroll-y-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
         <div className="w-full pb-24 pt-6 md:max-w-7xl md:mx-auto md:p-6">
           {results.length === 0 && (<div className="text-center mt-20 opacity-70 px-6"><p className="text-2xl mb-3 text-white font-medium">Aucun résultat exact.</p><p className="text-sm text-gray-400">Nous n'avons pas trouvé de correspondance parfaite. Essayez de modifier un critère.</p></div>)}
+          
           <div className="flex flex-col gap-8 md:hidden">
             {results.map((item, i) => (
               <div key={i} className="mx-5 glass-card rounded-[2.5rem] overflow-hidden relative flex flex-col group transition-transform duration-500">

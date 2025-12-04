@@ -46,21 +46,43 @@
       }
     </script>
     <style>
-      body { background-color: #000; color: white; font-family: "Inter", sans-serif; overflow: hidden; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
-      .liquid-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #0f172a; overflow: hidden; }
+      /* Styles globaux */
+      html, body { 
+        height: 100%; 
+        width: 100%;
+        overflow: hidden; /* Empêche le scroll de la fenêtre entière */
+        background-color: #000; 
+        color: white; 
+        font-family: "Inter", sans-serif;
+        
+        /* Désactive la sélection de texte (effet App) */
+        user-select: none; 
+        -webkit-user-select: none;
+        cursor: default;
+      }
+      
+      #root { height: 100%; width: 100%; display: flex; flex-direction: column; }
+
+      .liquid-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #0f172a; overflow: hidden; pointer-events: none; }
       .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: blob 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1); }
       .glass-panel { background: rgba(20, 25, 40, 0.65); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
       .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2); }
-      .glass-input { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); color: white; }
-      .no-scrollbar::-webkit-scrollbar { display: none; }
-      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      .glass-input { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); color: white; user-select: text; -webkit-user-select: text; } 
+      
+      /* Scrollbar personnalisée */
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+      ::-webkit-scrollbar-thumb { background: rgba(197, 160, 101, 0.5); border-radius: 10px; }
+      
+      /* Utilitaires Scroll */
+      .custom-scrollbar { overflow-y: auto; -webkit-overflow-scrolling: touch; }
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
     "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.86.0",
     "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
     "vite": "https://aistudiocdn.com/vite@^7.2.6",

@@ -98,29 +98,29 @@ const App: React.FC = () => {
 
   if (initializing) {
     return (
-      <div className="flex flex-col items-center justify-center h-full animate-in">
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-navy-900 text-white z-50">
         <Logo />
         <div className="w-8 h-8 border-2 border-white/10 border-t-gold-400 rounded-full animate-spin mt-6"></div>
       </div>
     );
   }
 
+  // STRUCTURE CORRIGÉE : h-[100dvh] avec Flex Column.
+  // Pas de position relative ou absolute ici, juste du flux standard.
   return (
-    <div className="w-full min-h-screen flex flex-col relative overflow-hidden bg-navy-900/30 backdrop-blur-sm">
-      <div className="w-full h-full flex-1 flex flex-col">
-        {screen === 'welcome' && <WelcomeScreen onLoginClick={() => setScreen('login')} onRegisterClick={() => setScreen('register')} />}
-        {screen === 'login' && <LoginScreen onBack={() => setScreen('welcome')} onSuccess={() => { setQuizAnswers(undefined); setScreen('quiz'); }} />}
-        {screen === 'register' && <RegisterScreen onBack={() => setScreen('welcome')} onSuccess={() => { setQuizAnswers(undefined); setScreen('quiz'); }} />}
-        {screen === 'quiz' && <QuizScreen initialAnswers={quizAnswers} onComplete={handleQuizComplete} onBack={() => setScreen('welcome')} />}
-        {screen === 'loading_results' && (
-          <div className="animate-in flex flex-col items-center justify-center min-h-[600px] h-full text-white">
-            <Logo />
-            <div className="w-12 h-12 border-4 border-white/10 border-t-gold-400 rounded-full animate-spin mt-10 shadow-[0_0_15px_rgba(197,160,101,0.3)]"></div>
-            <p className="text-gray-300 mt-6 text-sm animate-pulse tracking-widest font-light">RECHERCHE EN COURS...</p>
-          </div>
-        )}
-        {screen === 'results' && <ResultsScreen results={results} onRestart={handleRestartQuiz} onBack={handleBackToQuiz} onLogout={handleLogout} />}
-      </div>
+    <div className="h-[100dvh] w-full flex flex-col bg-navy-900/30 backdrop-blur-sm select-none">
+      {screen === 'welcome' && <WelcomeScreen onLoginClick={() => setScreen('login')} onRegisterClick={() => setScreen('register')} />}
+      {screen === 'login' && <LoginScreen onBack={() => setScreen('welcome')} onSuccess={() => { setQuizAnswers(undefined); setScreen('quiz'); }} />}
+      {screen === 'register' && <RegisterScreen onBack={() => setScreen('welcome')} onSuccess={() => { setQuizAnswers(undefined); setScreen('quiz'); }} />}
+      {screen === 'quiz' && <QuizScreen initialAnswers={quizAnswers} onComplete={handleQuizComplete} onBack={() => setScreen('welcome')} />}
+      {screen === 'loading_results' && (
+        <div className="animate-in flex flex-col items-center justify-center h-full text-white">
+          <Logo />
+          <div className="w-12 h-12 border-4 border-white/10 border-t-gold-400 rounded-full animate-spin mt-10 shadow-[0_0_15px_rgba(197,160,101,0.3)]"></div>
+          <p className="text-gray-300 mt-6 text-sm animate-pulse tracking-widest font-light">RECHERCHE EN COURS...</p>
+        </div>
+      )}
+      {screen === 'results' && <ResultsScreen results={results} onRestart={handleRestartQuiz} onBack={handleBackToQuiz} onLogout={handleLogout} />}
     </div>
   );
 };

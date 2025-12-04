@@ -52,12 +52,13 @@ const RegisterScreen: React.FC<Props> = ({ onBack, onSuccess }) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col animate-in overflow-hidden">
+    // FIX SCROLL: w-full h-full flex flex-col
+    <div className="w-full h-full flex flex-col animate-in bg-transparent select-none">
       <div className="p-6 bg-navy-900/20 backdrop-blur-md z-10 flex items-center shrink-0 border-b border-white/5">
         <button onClick={onBack} className="text-gray-400 hover:text-white mr-4 transition-colors p-2 hover:bg-white/5 rounded-full"><ArrowLeft size={20} /></button>
         <h2 className="text-gold-400 font-medium text-lg tracking-widest uppercase">Créer un compte</h2>
       </div>
-      <div className="flex-1 overflow-y-auto p-6 no-scrollbar">
+      <div className="flex-1 overflow-y-auto p-6 custom-scrollbar overscroll-y-contain">
         <div className="max-w-md mx-auto">
           <p className="text-xs font-bold text-gray-400 mb-4 tracking-wider uppercase">Vos informations</p>
           <div className="flex bg-white/5 p-1 rounded-2xl mb-6 border border-white/5 backdrop-blur-sm">{(['Femme', 'Homme'] as Gender[]).map(g => (<button key={g} onClick={() => updateForm('gender', g)} className={`flex-1 py-3 rounded-xl text-sm font-medium transition-all ${formData.gender === g ? 'bg-white/10 text-white shadow-lg border border-white/10' : 'text-gray-400 hover:text-white'}`}>{g}</button>))}</div>
