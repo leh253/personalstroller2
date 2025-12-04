@@ -15,7 +15,6 @@ const App: React.FC = () => {
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers | undefined>(undefined);
   const [initializing, setInitializing] = useState(true);
 
-  // 1. Check for existing session on startup
   useEffect(() => {
     const checkUser = async () => {
       try {
@@ -29,15 +28,12 @@ const App: React.FC = () => {
         setInitializing(false);
       }
     };
-
     checkUser();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) {
         setScreen(current => {
-           if (current !== 'welcome' && current !== 'login' && current !== 'register') {
-             return 'welcome';
-           }
+           if (current !== 'welcome' && current !== 'login' && current !== 'register') return 'welcome';
            return current;
         });
       }
@@ -105,8 +101,6 @@ const App: React.FC = () => {
     );
   }
 
-  // STRUCTURE CORRIGÉE : h-[100dvh] avec Flex Column.
-  // Pas de position relative ou absolute ici, juste du flux standard.
   return (
     <div className="h-[100dvh] w-full flex flex-col bg-navy-900/30 backdrop-blur-sm select-none">
       {screen === 'welcome' && <WelcomeScreen onLoginClick={() => setScreen('login')} onRegisterClick={() => setScreen('register')} />}

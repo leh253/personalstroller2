@@ -30,7 +30,6 @@ const LoginScreen: React.FC<Props> = ({ onBack, onSuccess }) => {
   };
 
   return (
-    // FIX SCROLL: w-full h-full flex flex-col
     <div className="w-full h-full flex flex-col animate-in bg-transparent select-none">
       <div className="flex-1 overflow-y-auto custom-scrollbar overscroll-y-contain p-8">
         <div className="max-w-md w-full mx-auto flex flex-col justify-center min-h-full">

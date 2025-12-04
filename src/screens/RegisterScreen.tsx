@@ -52,7 +52,6 @@ const RegisterScreen: React.FC<Props> = ({ onBack, onSuccess }) => {
   };
 
   return (
-    // FIX SCROLL: w-full h-full flex flex-col
     <div className="w-full h-full flex flex-col animate-in bg-transparent select-none">
       <div className="p-6 bg-navy-900/20 backdrop-blur-md z-10 flex items-center shrink-0 border-b border-white/5">
         <button onClick={onBack} className="text-gray-400 hover:text-white mr-4 transition-colors p-2 hover:bg-white/5 rounded-full"><ArrowLeft size={20} /></button>
