@@ -57,3 +57,18 @@ export const recordProductClick = async (stroller: Stroller) => {
     }
   } catch (error) { console.warn("Could not track click", error); }
 };
+
+export const deleteUserAccountData = async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Utilisateur non connecté");
+
+  // Supprimer les données des tables (nécessite les policies DELETE dans Supabase)
+  const p1 = supabase.from('user_leads').delete().eq('id', user.id);
+  const p2 = supabase.from('quiz_history').delete().eq('user_id', user.id);
+  
+  await Promise.all([p1, p2]);
+  
+  // Note: La suppression du compte Auth (login) ne peut se faire que via l'admin ou une Edge Function
+  // Pour l'app client, on supprime les données et on déconnecte, ce qui suffit souvent pour la conformité "In-App" basique.
+  return true;
+};

@@ -1,8 +1,8 @@
-import React from 'react';
-import { RefreshCw, ExternalLink, ArrowLeft } from 'lucide-react';
+import React, { useState } from 'react';
+import { RefreshCw, ExternalLink, ArrowLeft, Trash2, AlertTriangle } from 'lucide-react';
 import Logo from '../components/Logo';
 import Button from '../components/Button';
-import { recordProductClick } from '../services/strollerService';
+import { recordProductClick, deleteUserAccountData } from '../services/strollerService';
 import { Stroller } from '../types';
 
 interface Props {
@@ -13,18 +13,41 @@ interface Props {
 }
 
 const ResultsScreen: React.FC<Props> = ({ results, onRestart, onBack, onLogout }) => {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const handleOfferClick = (stroller: Stroller) => { recordProductClick(stroller); };
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteUserAccountData();
+      alert("Vos données ont été supprimées avec succès.");
+      onLogout(); // Déconnexion après suppression
+    } catch (error: any) {
+      console.error(error);
+      alert("Erreur lors de la suppression : " + error.message);
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <div className="w-full h-full flex flex-col animate-in bg-transparent select-none">
+      {/* Header */}
       <div className="p-4 md:p-6 bg-navy-900/40 backdrop-blur-xl z-10 flex flex-col items-center shrink-0 relative border-b border-white/5">
         <button onClick={onBack} className="absolute top-4 left-4 md:top-6 md:left-6 text-gray-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full"><ArrowLeft size={24} /></button>
         <Logo size="small" className="md:scale-110 md:mb-2" />
         <div className="hidden md:block text-center"><h2 className="text-xl text-white tracking-widest font-light mt-2 uppercase">Votre Sélection</h2><p className="text-sm text-gray-400 mt-1">{results.length} poussette(s) trouvée(s)</p></div>
       </div>
+
+      {/* Content */}
       <div className="flex-1 overflow-y-auto scroll-smooth custom-scrollbar overscroll-y-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
         <div className="w-full pb-24 pt-6 md:max-w-7xl md:mx-auto md:p-6">
+          
+          {/* Results Display */}
           {results.length === 0 && (<div className="text-center mt-20 opacity-70 px-6"><p className="text-2xl mb-3 text-white font-medium">Aucun résultat exact.</p><p className="text-sm text-gray-400">Nous n'avons pas trouvé de correspondance parfaite. Essayez de modifier un critère.</p></div>)}
+          
+          {/* Mobile Layout */}
           <div className="flex flex-col gap-8 md:hidden">
             {results.map((item, i) => (
               <div key={i} className="mx-5 glass-card rounded-[2.5rem] overflow-hidden relative flex flex-col group transition-transform duration-500">
@@ -41,6 +64,8 @@ const ResultsScreen: React.FC<Props> = ({ results, onRestart, onBack, onLogout }
               </div>
             ))}
           </div>
+
+          {/* Desktop Layout */}
           <div className="hidden md:grid grid-cols-2 xl:grid-cols-3 gap-8">
             {results.map((item, i) => (
               <div key={i} className="glass-card p-5 rounded-3xl relative flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)] hover:border-white/20 group overflow-hidden">
@@ -57,10 +82,34 @@ const ResultsScreen: React.FC<Props> = ({ results, onRestart, onBack, onLogout }
               </div>
             ))}
           </div>
-          <div className="mt-16 mb-12 max-w-md mx-auto px-6">
+
+          {/* Footer Actions */}
+          <div className="mt-16 mb-12 max-w-md mx-auto px-6 space-y-6">
             <Button variant="outline" onClick={onRestart}><div className="flex items-center gap-2 justify-center"><RefreshCw size={18} /> Recommencer</div></Button>
-            <button onClick={onLogout} className="w-full text-center text-gray-500 text-xs mt-6 hover:text-white transition tracking-widest uppercase">Se déconnecter</button>
+            
+            <div className="pt-6 border-t border-white/10">
+              <button onClick={onLogout} className="w-full text-center text-gray-400 text-xs hover:text-white transition tracking-widest uppercase mb-4">Se déconnecter</button>
+              
+              {!showDeleteConfirm ? (
+                <button 
+                  onClick={() => setShowDeleteConfirm(true)} 
+                  className="w-full text-center text-red-400/60 text-[10px] hover:text-red-400 transition flex items-center justify-center gap-1"
+                >
+                  <Trash2 size={10} /> Supprimer mon compte
+                </button>
+              ) : (
+                <div className="bg-red-500/10 border border-red-500/30 p-4 rounded-xl text-center animate-in">
+                  <div className="flex justify-center mb-2 text-red-400"><AlertTriangle size={24} /></div>
+                  <p className="text-white text-xs mb-3 font-medium">Cette action est irréversible. Toutes vos données seront effacées.</p>
+                  <div className="flex gap-2">
+                    <button onClick={() => setShowDeleteConfirm(false)} className="flex-1 py-2 bg-white/5 rounded-lg text-xs text-gray-300">Annuler</button>
+                    <button onClick={handleDeleteAccount} disabled={isDeleting} className="flex-1 py-2 bg-red-500 hover:bg-red-600 rounded-lg text-xs text-white font-bold">{isDeleting ? '...' : 'Confirmer'}</button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
+
         </div>
       </div>
     </div>

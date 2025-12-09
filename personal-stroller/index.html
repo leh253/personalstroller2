@@ -47,45 +47,30 @@
       }
     </script>
     <style>
-      /* Styles globaux */
-      html, body { 
-        height: 100%; 
-        width: 100%;
-        overflow: hidden;
-        background-color: #000; 
-        color: white; 
-        font-family: "Inter", sans-serif;
-        user-select: none; 
-        -webkit-user-select: none;
-        cursor: default;
-        padding-top: env(safe-area-inset-top); 
-        padding-bottom: env(safe-area-inset-bottom);
-      }
-      
-      #root { height: 100%; width: 100%; display: flex; flex-direction: column; }
-
-      .liquid-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #0f172a; overflow: hidden; pointer-events: none; }
+      body { background-color: #000; color: white; font-family: "Inter", sans-serif; overflow: hidden; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); user-select: none; -webkit-user-select: none; }
+      .liquid-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #0f172a; overflow: hidden; }
       .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: blob 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1); }
       .glass-panel { background: rgba(20, 25, 40, 0.65); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
       .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2); }
-      .glass-input { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); color: white; user-select: text; -webkit-user-select: text; } 
-      
-      ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
-      ::-webkit-scrollbar-thumb { background: rgba(197, 160, 101, 0.5); border-radius: 10px; }
-      .custom-scrollbar { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+      .glass-input { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); color: white; }
+      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(197, 160, 101, 0.5); border-radius: 10px; }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(197, 160, 101, 0.8); }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.1",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
     "react/": "https://aistudiocdn.com/react@^19.2.1/",
-    "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.86.2",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "vite": "https://aistudiocdn.com/vite@^7.2.6",
-    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1",
-    "@capacitor/cli": "https://aistudiocdn.com/@capacitor/cli@^7.4.4"
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "vite": "https://aistudiocdn.com/vite@^7.2.7",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.2",
+    "@capacitor/cli": "https://aistudiocdn.com/@capacitor/cli@^8.0.0",
+    "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.87.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/"
   }
 }
 </script>
@@ -97,20 +82,14 @@
       <div class="orb w-96 h-96 bg-blue-900 top-0 right-0 mix-blend-screen animate-blob" style="animation-delay: 2s"></div>
       <div class="orb w-96 h-96 bg-gold-600/30 bottom-0 left-20 mix-blend-screen animate-blob" style="animation-delay: 4s"></div>
     </div>
-    
     <div id="root"></div>
-    
-    <!-- Le script principal qui lance l'application -->
-    <script type="module" src="/src/index.tsx"></script>
-    
-    <!-- Enregistrement du Service Worker pour PWA -->
+    <script type="module" src="/index.tsx"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed', err));
+          navigator.serviceWorker.register('/sw.js');
         });
       }
     </script>
-  <script type="module" src="/index.tsx"></script>
-</body>
+  </body>
 </html>
