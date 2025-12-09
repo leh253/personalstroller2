@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.personal_products_co.personal_stroller_v2',
+  appId: 'com.personal_products_co.personal_stroller_v7',
   appName: 'Personal Stroller',
   webDir: 'dist',
   server: {
