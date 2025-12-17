@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Personal Stroller | Expert Poussettes</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,11 +21,13 @@
       }
     </script>
     <style>
-      body { font-family: 'Inter', sans-serif; background-color: #151b2b; color: white; }
-      .glass-card { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-      .gold-text { background: linear-gradient(to right, #fde68a, #c5a065, #b08d55); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-      ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-thumb { background: #c5a065; border-radius: 10px; }
+      body { 
+        background-color: #151b2b; 
+        margin: 0; 
+        overflow-x: hidden;
+        -webkit-tap-highlight-color: transparent;
+      }
+      #root { min-height: 100vh; }
     </style>
 <script type="importmap">
 {
@@ -43,7 +45,7 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-<body class="bg-navy-900 min-h-screen">
+<body class="bg-[#151b2b]">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>
