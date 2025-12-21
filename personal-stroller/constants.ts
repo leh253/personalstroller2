@@ -1,7 +1,6 @@
-import { QuizStep } from './types';
 
-// Supabase Configuration
-// Ideally these are in .env, but keeping them here to match the requested standalone functionality
+import { QuizStep } from './types.ts';
+
 export const SUPABASE_URL = 'https://osijrppbtsllhnxjhjie.supabase.co';
 export const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zaWpycHBidHNsbGhueGpoamllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQwOTc1MzEsImV4cCI6MjA3OTY3MzUzMX0._XskIJ9_vBi5hMpT2k8ZJ_wCXfKsK1kFPYjXiDp8K9I';
 

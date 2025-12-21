@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import WelcomeScreen from './screens/WelcomeScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -14,6 +15,7 @@ const App: React.FC = () => {
   const [results, setResults] = useState<Stroller[]>([]);
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers | undefined>(undefined);
   const [initializing, setInitializing] = useState(true);
+  const [quizSessionId, setQuizSessionId] = useState(0);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -47,6 +49,7 @@ const App: React.FC = () => {
     setScreen('welcome');
     setResults([]);
     setQuizAnswers(undefined);
+    setQuizSessionId(id => id + 1);
   };
 
   const handleQuizComplete = async (answers: QuizAnswers) => {
@@ -85,6 +88,7 @@ const App: React.FC = () => {
 
   const handleRestartQuiz = () => {
     setQuizAnswers(undefined);
+    setQuizSessionId(prev => prev + 1); // Incrémenter force le changement de key
     setScreen('quiz');
   };
 
@@ -94,7 +98,7 @@ const App: React.FC = () => {
 
   if (initializing) {
     return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center bg-navy-900 text-white z-50">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-navy-900 text-white">
         <Logo />
         <div className="w-8 h-8 border-2 border-white/10 border-t-gold-400 rounded-full animate-spin mt-6"></div>
       </div>
@@ -102,13 +106,22 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="h-[100dvh] w-full flex flex-col bg-navy-900/30 backdrop-blur-sm select-none">
+    <div className="min-h-screen w-full flex flex-col bg-navy-900 selection:bg-gold-400/30">
       {screen === 'welcome' && <WelcomeScreen onLoginClick={() => setScreen('login')} onRegisterClick={() => setScreen('register')} />}
-      {screen === 'login' && <LoginScreen onBack={() => setScreen('welcome')} onSuccess={() => { setQuizAnswers(undefined); setScreen('quiz'); }} />}
-      {screen === 'register' && <RegisterScreen onBack={() => setScreen('welcome')} onSuccess={() => { setQuizAnswers(undefined); setScreen('quiz'); }} />}
-      {screen === 'quiz' && <QuizScreen initialAnswers={quizAnswers} onComplete={handleQuizComplete} onBack={() => setScreen('welcome')} />}
+      {screen === 'login' && <LoginScreen onBack={() => setScreen('welcome')} onSuccess={() => { setQuizAnswers(undefined); setQuizSessionId(id => id + 1); setScreen('quiz'); }} />}
+      {screen === 'register' && <RegisterScreen onBack={() => setScreen('welcome')} onSuccess={() => { setQuizAnswers(undefined); setQuizSessionId(id => id + 1); setScreen('quiz'); }} />}
+      
+      {screen === 'quiz' && (
+        <QuizScreen 
+          key={quizSessionId}
+          initialAnswers={quizAnswers} 
+          onComplete={handleQuizComplete} 
+          onBack={() => setScreen('welcome')} 
+        />
+      )}
+      
       {screen === 'loading_results' && (
-        <div className="animate-in flex flex-col items-center justify-center h-full text-white">
+        <div className="animate-in flex flex-col items-center justify-center min-h-screen text-white">
           <Logo />
           <div className="w-12 h-12 border-4 border-white/10 border-t-gold-400 rounded-full animate-spin mt-10 shadow-[0_0_15px_rgba(197,160,101,0.3)]"></div>
           <p className="text-gray-300 mt-6 text-sm animate-pulse tracking-widest font-light">RECHERCHE EN COURS...</p>

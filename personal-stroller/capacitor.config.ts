@@ -1,11 +1,16 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.personal_products_co.personal_stroller_v5',
+  // ID corrigé (sans tirets) pour valider la configuration Capacitor
+  appId: 'com.personalproducts.personalstroller', 
+  
   appName: 'Personal Stroller',
   webDir: 'dist',
   server: {
     androidScheme: 'https'
+  },
+  ios: {
+    contentInset: 'always'
   },
   plugins: {
     Keyboard: {

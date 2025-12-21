@@ -1,9 +1,10 @@
+
 export type ParentStatus = 'future' | 'parent';
 export type Gender = 'Femme' | 'Homme';
 
 export interface Child {
   name: string;
-  birthDate: string;
+  age: string; // Changement de birthDate à age
 }
 
 export interface UserFormData {

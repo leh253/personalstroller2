@@ -21,17 +21,19 @@ const RegisterScreen: React.FC<Props> = ({ onBack, onSuccess }) => {
   const updateForm = (field: keyof UserFormData, value: any) => setFormData(prev => ({ ...prev, [field]: value }));
 
   const addChild = () => {
-    if (formData.children.length < 6) setFormData(p => ({...p, children: [...p.children, { name: '', birthDate: '' }]}));
+    // Updated to use age instead of birthDate to match the updated Child interface
+    if (formData.children.length < 6) setFormData(p => ({...p, children: [...p.children, { name: '', age: '' }]}));
   };
 
   const removeChild = (index: number) => {
     const c = [...formData.children];
     c.splice(index, 1);
-    if (c.length === 0) c.push({ name: '', birthDate: '' });
+    // Updated to use age instead of birthDate
+    if (c.length === 0) c.push({ name: '', age: '' });
     setFormData(p => ({...p, children: c}));
   };
 
-  const updateChild = (index: number, field: 'name' | 'birthDate', val: string) => {
+  const updateChild = (index: number, field: 'name' | 'age', val: string) => {
     const c = [...formData.children];
     c[index][field] = val;
     setFormData(p => ({...p, children: c}));
@@ -93,18 +95,21 @@ const RegisterScreen: React.FC<Props> = ({ onBack, onSuccess }) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col animate-in overflow-hidden">
-      {/* Header */}
-      <div className="p-6 bg-navy-900/20 backdrop-blur-md z-10 flex items-center shrink-0 border-b border-white/5">
-        <button onClick={onBack} className="text-gray-400 hover:text-white mr-4 transition-colors p-2 hover:bg-white/5 rounded-full">
-          <ArrowLeft size={20} />
+    <div className="w-full h-full p-8 flex flex-col animate-in relative overflow-y-auto no-scrollbar">
+      <div className="max-w-md w-full mx-auto flex flex-col justify-center min-h-full">
+        <button 
+          onClick={onBack} 
+          className="absolute top-8 left-8 text-gray-400 hover:text-white transition-colors p-3 hover:bg-white/5 rounded-full backdrop-blur-sm border border-transparent hover:border-white/10"
+        >
+          <ArrowLeft />
         </button>
-        <h2 className="text-gold-400 font-medium text-lg tracking-widest uppercase">Créer un compte</h2>
-      </div>
-
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto p-6 no-scrollbar">
-        <div className="max-w-md mx-auto">
+        
+        <div className="mt-8 mb-10 text-center">
+          <h2 className="text-4xl font-light text-white mb-2 tracking-tight">Créer un compte</h2>
+          <p className="text-gray-400 font-light">Inscrivez-vous pour sauvegarder vos résultats</p>
+        </div>
+        
+        <div className="glass-panel p-8 rounded-[2rem]">
           <p className="text-xs font-bold text-gray-400 mb-4 tracking-wider uppercase">Vos informations</p>
           
           <div className="flex bg-white/5 p-1 rounded-2xl mb-6 border border-white/5 backdrop-blur-sm">
@@ -139,7 +144,17 @@ const RegisterScreen: React.FC<Props> = ({ onBack, onSuccess }) => {
                   <button onClick={() => removeChild(i)} className="absolute top-2 right-2 text-white/30 hover:text-red-400 p-2 transition-colors"><Trash2 size={16} /></button>
                   <p className="text-gold-400 text-xs font-bold mb-3 tracking-widest uppercase">Enfant {i+1}</p>
                   <InputField icon={User} placeholder="Prénom" value={c.name} onChange={e => updateChild(i, 'name', e.target.value)} />
-                  <DateSelectors label="Date de naissance" value={c.birthDate} onChange={v => updateChild(i, 'birthDate', v)} type="past" />
+                  {/* Updated from DateSelectors to a select dropdown for age to match Child interface */}
+                  <div className="relative w-full mb-5">
+                    <select 
+                      className="w-full glass-input py-4 px-4 rounded-2xl outline-none focus:border-gold-400/50 focus:bg-white/10 text-sm appearance-none transition-all shadow-inner bg-navy-900 text-white"
+                      value={c.age}
+                      onChange={e => updateChild(i, 'age', e.target.value)}
+                    >
+                      <option value="" disabled>Âge</option>
+                      {['0','1','2','3','4','5+'].map(age => <option key={age} value={age} className="bg-navy-900">{age} an{age !== '0' && age !== '1' ? 's' : ''}</option>)}
+                    </select>
+                  </div>
                 </div>
               ))}
               {formData.children.length < 6 && <button onClick={addChild} className="w-full py-3 border border-dashed border-white/20 text-gray-400 rounded-xl hover:text-gold-400 hover:border-gold-400 transition hover:bg-white/5">+ Ajouter un enfant</button>}

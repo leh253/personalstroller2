@@ -1,10 +1,10 @@
 
 import React, { useState } from 'react';
 import { RefreshCw, ExternalLink, ArrowLeft, LogOut, Trash2, AlertTriangle } from 'lucide-react';
-import Logo from '../components/Logo';
-import Button from '../components/Button';
-import { recordProductClick, deleteUserAccountData } from '../services/strollerService';
-import { Stroller } from '../types';
+import Logo from './Logo.tsx';
+import Button from './Button.tsx';
+import { recordProductClick, deleteUserAccountData } from './strollerService.ts';
+import { Stroller } from './types.ts';
 
 interface Props {
   results: Stroller[];
@@ -40,7 +40,7 @@ const ResultsScreen: React.FC<Props> = ({ results, onRestart, onBack, onLogout }
 
       <main className="flex-1 max-w-7xl mx-auto w-full p-6 md:p-12">
         <header className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-2 text-white">Votre Sélection Sur-Mesure</h2>
+          <h2 className="text-3xl font-bold mb-2">Votre Sélection Sur-Mesure</h2>
           <p className="text-gold-400 text-xs tracking-widest uppercase font-bold opacity-60">
             {results.length} modèle(s) trouvé(s) pour votre style de vie
           </p>

@@ -1,9 +1,10 @@
+
 export type ParentStatus = 'future' | 'parent';
 export type Gender = 'Femme' | 'Homme';
 
 export interface Child {
   name: string;
-  birthDate: string;
+  age: string;
 }
 
 export interface UserFormData {
@@ -35,9 +36,9 @@ export type QuizAnswers = Record<string, string>;
 export interface Stroller {
   id?: number;
   marque: string;
-  modele: string; // Normalized form
-  Modele?: string; // Original DB column often capitalized
-  Q1: string; // q1
+  modele: string;
+  Modele?: string;
+  Q1: string;
   Q2: string;
   Q3: string;
   Q4: string;
