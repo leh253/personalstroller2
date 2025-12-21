@@ -5,8 +5,8 @@
   "description": "Trouvez la poussette idéale pour votre enfant.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#151b2b",
+  "theme_color": "#151b2b",
   "orientation": "portrait",
   "icons": [
     {

@@ -10,8 +10,8 @@ export default {
       fontFamily: { sans: ['"Inter"', 'sans-serif'] },
       colors: {
         navy: { 
-          900: '#000000', // Noir pur pour le fond
-          800: '#121212'  // Gris très foncé pour les éléments (cartes)
+          900: '#151b2b', // Retour au bleu nuit original
+          800: '#1e293b'  // Retour au gris/bleu slate pour les composants
         },
         gold: { 400: '#c5a065', 500: '#b08d55', 600: '#8c6b3a' }
       },
